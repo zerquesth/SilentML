@@ -1,198 +1,222 @@
 Shop:AddButton("Gift-System", function()
-    -- Создаем основное окно
+    -- Создаем основное окно в стиле Silent
     local GiftSystemGUI = Instance.new("ScreenGui")
     local MainFrame = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
     local TopBar = Instance.new("Frame")
     local Title = Instance.new("TextLabel")
     local CloseButton = Instance.new("TextButton")
-    local ScrollingFrame = Instance.new("ScrollingFrame")
-    local InventoryFolder = Instance.new("Frame")
+    local ContentFrame = Instance.new("ScrollingFrame")
+    local UIListLayout = Instance.new("UIListLayout")
+    
+    -- Секция инвентаря
+    local InventorySection = Instance.new("Frame")
     local InventoryTitle = Instance.new("TextLabel")
     local ProteinEggLabel = Instance.new("TextLabel")
     local TropicalShakeLabel = Instance.new("TextLabel")
-    local GiftFolder = Instance.new("Frame")
+    
+    -- Секция подарков
+    local GiftSection = Instance.new("Frame")
     local GiftTitle = Instance.new("TextLabel")
-    local PlayerDropdown = Instance.new("Frame")
-    local DropdownLabel = Instance.new("TextLabel")
+    local PlayerDropdownFrame = Instance.new("Frame")
     local DropdownButton = Instance.new("TextButton")
-    local DropdownFrame = Instance.new("Frame")
-    local UIListLayout = Instance.new("UIListLayout")
-    local EggGiftSection = Instance.new("Frame")
+    local DropdownList = Instance.new("Frame")
+    local DropdownUIList = Instance.new("UIListLayout")
+    
+    -- Поля ввода и кнопки
+    local EggGiftFrame = Instance.new("Frame")
     local EggTextBox = Instance.new("TextBox")
     local EggGiftButton = Instance.new("TextButton")
-    local ShakeGiftSection = Instance.new("Frame")
+    
+    local ShakeGiftFrame = Instance.new("Frame")
     local ShakeTextBox = Instance.new("TextBox")
     local ShakeGiftButton = Instance.new("TextButton")
 
-    -- Настройка GUI
+    -- Настройка основного GUI
     GiftSystemGUI.Name = "GiftSystemGUI"
     GiftSystemGUI.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     GiftSystemGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    GiftSystemGUI.ResetOnSpawn = false
 
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = GiftSystemGUI
-    MainFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+    MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
     MainFrame.BorderSizePixel = 0
-    MainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
-    MainFrame.Size = UDim2.new(0, 350, 0, 400)
+    MainFrame.Position = UDim2.new(0.3, 0, 0.25, 0)
+    MainFrame.Size = UDim2.new(0, 300, 0, 350)
     MainFrame.Active = true
     MainFrame.Draggable = true
 
+    UICorner.CornerRadius = UDim.new(0, 8)
+    UICorner.Parent = MainFrame
+
     TopBar.Name = "TopBar"
     TopBar.Parent = MainFrame
-    TopBar.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    TopBar.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
     TopBar.BorderSizePixel = 0
-    TopBar.Size = UDim2.new(1, 0, 0, 30)
+    TopBar.Size = UDim2.new(1, 0, 0, 35)
 
     Title.Name = "Title"
     Title.Parent = TopBar
     Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Title.BackgroundTransparency = 1.0
-    Title.Position = UDim2.new(0, 10, 0, 0)
+    Title.Position = UDim2.new(0, 15, 0, 0)
     Title.Size = UDim2.new(0, 200, 1, 0)
-    Title.Font = Enum.Font.Gotham
+    Title.Font = Enum.Font.GothamBold
     Title.Text = "Gift System"
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Title.TextSize = 14
+    Title.TextSize = 16
     Title.TextXAlignment = Enum.TextXAlignment.Left
 
     CloseButton.Name = "CloseButton"
     CloseButton.Parent = TopBar
-    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
+    CloseButton.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
     CloseButton.BorderSizePixel = 0
-    CloseButton.Position = UDim2.new(1, -30, 0, 5)
-    CloseButton.Size = UDim2.new(0, 25, 0, 20)
-    CloseButton.Font = Enum.Font.Gotham
+    CloseButton.Position = UDim2.new(1, -30, 0, 7)
+    CloseButton.Size = UDim2.new(0, 20, 0, 20)
+    CloseButton.Font = Enum.Font.GothamBold
     CloseButton.Text = "X"
     CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     CloseButton.TextSize = 12
 
-    ScrollingFrame.Parent = MainFrame
-    ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ScrollingFrame.BackgroundTransparency = 1.0
-    ScrollingFrame.Position = UDim2.new(0, 0, 0, 30)
-    ScrollingFrame.Size = UDim2.new(1, 0, 1, -30)
-    ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 500)
-    ScrollingFrame.ScrollBarThickness = 5
+    ContentFrame.Parent = MainFrame
+    ContentFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ContentFrame.BackgroundTransparency = 1.0
+    ContentFrame.Position = UDim2.new(0, 0, 0, 35)
+    ContentFrame.Size = UDim2.new(1, 0, 1, -35)
+    ContentFrame.CanvasSize = UDim2.new(0, 0, 0, 400)
+    ContentFrame.ScrollBarThickness = 4
+    ContentFrame.ScrollBarImageColor3 = Color3.fromRGB(100, 100, 120)
 
-    -- Inventory Management Section
-    InventoryFolder.Name = "InventoryFolder"
-    InventoryFolder.Parent = ScrollingFrame
-    InventoryFolder.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-    InventoryFolder.BorderSizePixel = 0
-    InventoryFolder.Position = UDim2.new(0, 10, 0, 10)
-    InventoryFolder.Size = UDim2.new(1, -20, 0, 80)
+    UIListLayout.Parent = ContentFrame
+    UIListLayout.Padding = UDim.new(0, 10)
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+    -- Секция инвентаря
+    InventorySection.Name = "InventorySection"
+    InventorySection.Parent = ContentFrame
+    InventorySection.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+    InventorySection.BorderSizePixel = 0
+    InventorySection.Size = UDim2.new(1, -20, 0, 80)
+    InventorySection.Position = UDim2.new(0, 10, 0, 0)
+
+    local inventoryCorner = Instance.new("UICorner")
+    inventoryCorner.CornerRadius = UDim.new(0, 6)
+    inventoryCorner.Parent = InventorySection
 
     InventoryTitle.Name = "InventoryTitle"
-    InventoryTitle.Parent = InventoryFolder
+    InventoryTitle.Parent = InventorySection
     InventoryTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     InventoryTitle.BackgroundTransparency = 1.0
-    InventoryTitle.Position = UDim2.new(0, 10, 0, 5)
+    InventoryTitle.Position = UDim2.new(0, 10, 0, 8)
     InventoryTitle.Size = UDim2.new(1, -20, 0, 20)
     InventoryTitle.Font = Enum.Font.GothamBold
-    InventoryTitle.Text = "Inventory Management"
+    InventoryTitle.Text = "Inventory"
     InventoryTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     InventoryTitle.TextSize = 14
     InventoryTitle.TextXAlignment = Enum.TextXAlignment.Left
 
     ProteinEggLabel.Name = "ProteinEggLabel"
-    ProteinEggLabel.Parent = InventoryFolder
+    ProteinEggLabel.Parent = InventorySection
     ProteinEggLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ProteinEggLabel.BackgroundTransparency = 1.0
-    ProteinEggLabel.Position = UDim2.new(0, 10, 0, 30)
+    ProteinEggLabel.Position = UDim2.new(0, 10, 0, 35)
     ProteinEggLabel.Size = UDim2.new(1, -20, 0, 20)
     ProteinEggLabel.Font = Enum.Font.Gotham
     ProteinEggLabel.Text = "Protein Eggs: 0"
-    ProteinEggLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ProteinEggLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
     ProteinEggLabel.TextSize = 12
     ProteinEggLabel.TextXAlignment = Enum.TextXAlignment.Left
 
     TropicalShakeLabel.Name = "TropicalShakeLabel"
-    TropicalShakeLabel.Parent = InventoryFolder
+    TropicalShakeLabel.Parent = InventorySection
     TropicalShakeLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     TropicalShakeLabel.BackgroundTransparency = 1.0
-    TropicalShakeLabel.Position = UDim2.new(0, 10, 0, 50)
+    TropicalShakeLabel.Position = UDim2.new(0, 10, 0, 55)
     TropicalShakeLabel.Size = UDim2.new(1, -20, 0, 20)
     TropicalShakeLabel.Font = Enum.Font.Gotham
     TropicalShakeLabel.Text = "Tropical Shakes: 0"
-    TropicalShakeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TropicalShakeLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
     TropicalShakeLabel.TextSize = 12
     TropicalShakeLabel.TextXAlignment = Enum.TextXAlignment.Left
 
-    -- Gift System Section
-    GiftFolder.Name = "GiftFolder"
-    GiftFolder.Parent = ScrollingFrame
-    GiftFolder.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-    GiftFolder.BorderSizePixel = 0
-    GiftFolder.Position = UDim2.new(0, 10, 0, 100)
-    GiftFolder.Size = UDim2.new(1, -20, 0, 250)
+    -- Секция подарков
+    GiftSection.Name = "GiftSection"
+    GiftSection.Parent = ContentFrame
+    GiftSection.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+    GiftSection.BorderSizePixel = 0
+    GiftSection.Size = UDim2.new(1, -20, 0, 200)
+    GiftSection.Position = UDim2.new(0, 10, 0, 90)
+
+    local giftCorner = Instance.new("UICorner")
+    giftCorner.CornerRadius = UDim.new(0, 6)
+    giftCorner.Parent = GiftSection
 
     GiftTitle.Name = "GiftTitle"
-    GiftTitle.Parent = GiftFolder
+    GiftTitle.Parent = GiftSection
     GiftTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     GiftTitle.BackgroundTransparency = 1.0
-    GiftTitle.Position = UDim2.new(0, 10, 0, 5)
+    GiftTitle.Position = UDim2.new(0, 10, 0, 8)
     GiftTitle.Size = UDim2.new(1, -20, 0, 20)
     GiftTitle.Font = Enum.Font.GothamBold
-    GiftTitle.Text = "Gift System"
+    GiftTitle.Text = "Send Gifts"
     GiftTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     GiftTitle.TextSize = 14
     GiftTitle.TextXAlignment = Enum.TextXAlignment.Left
 
-    -- Player Dropdown
-    PlayerDropdown.Name = "PlayerDropdown"
-    PlayerDropdown.Parent = GiftFolder
-    PlayerDropdown.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
-    PlayerDropdown.BorderSizePixel = 0
-    PlayerDropdown.Position = UDim2.new(0, 10, 0, 30)
-    PlayerDropdown.Size = UDim2.new(1, -20, 0, 60)
+    -- Выбор игрока
+    PlayerDropdownFrame.Name = "PlayerDropdownFrame"
+    PlayerDropdownFrame.Parent = GiftSection
+    PlayerDropdownFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
+    PlayerDropdownFrame.BorderSizePixel = 0
+    PlayerDropdownFrame.Position = UDim2.new(0, 10, 0, 35)
+    PlayerDropdownFrame.Size = UDim2.new(1, -20, 0, 35)
 
-    DropdownLabel.Name = "DropdownLabel"
-    DropdownLabel.Parent = PlayerDropdown
-    DropdownLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    DropdownLabel.BackgroundTransparency = 1.0
-    DropdownLabel.Position = UDim2.new(0, 5, 0, 5)
-    DropdownLabel.Size = UDim2.new(1, -10, 0, 15)
-    DropdownLabel.Font = Enum.Font.Gotham
-    DropdownLabel.Text = "Choose Player:"
-    DropdownLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    DropdownLabel.TextSize = 12
-    DropdownLabel.TextXAlignment = Enum.TextXAlignment.Left
+    local dropdownCorner = Instance.new("UICorner")
+    dropdownCorner.CornerRadius = UDim.new(0, 4)
+    dropdownCorner.Parent = PlayerDropdownFrame
 
     DropdownButton.Name = "DropdownButton"
-    DropdownButton.Parent = PlayerDropdown
-    DropdownButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+    DropdownButton.Parent = PlayerDropdownFrame
+    DropdownButton.BackgroundColor3 = Color3.fromRGB(60, 60, 65)
     DropdownButton.BorderSizePixel = 0
-    DropdownButton.Position = UDim2.new(0, 5, 0, 25)
-    DropdownButton.Size = UDim2.new(1, -10, 0, 25)
+    DropdownButton.Size = UDim2.new(1, 0, 1, 0)
     DropdownButton.Font = Enum.Font.Gotham
     DropdownButton.Text = "Select Player"
     DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     DropdownButton.TextSize = 12
 
-    DropdownFrame.Name = "DropdownFrame"
-    DropdownFrame.Parent = PlayerDropdown
-    DropdownFrame.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-    DropdownFrame.BorderSizePixel = 0
-    DropdownFrame.Position = UDim2.new(0, 5, 1, 5)
-    DropdownFrame.Size = UDim2.new(1, -10, 0, 0)
-    DropdownFrame.Visible = false
-    DropdownFrame.ClipsDescendants = true
+    DropdownList.Name = "DropdownList"
+    DropdownList.Parent = PlayerDropdownFrame
+    DropdownList.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
+    DropdownList.BorderSizePixel = 0
+    DropdownList.Position = UDim2.new(0, 0, 1, 2)
+    DropdownList.Size = UDim2.new(1, 0, 0, 0)
+    DropdownList.Visible = false
+    DropdownList.ClipsDescendants = true
 
-    UIListLayout.Parent = DropdownFrame
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    local listCorner = Instance.new("UICorner")
+    listCorner.CornerRadius = UDim.new(0, 4)
+    listCorner.Parent = DropdownList
 
-    -- Egg Gift Section
-    EggGiftSection.Name = "EggGiftSection"
-    EggGiftSection.Parent = GiftFolder
-    EggGiftSection.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
-    EggGiftSection.BorderSizePixel = 0
-    EggGiftSection.Position = UDim2.new(0, 10, 0, 100)
-    EggGiftSection.Size = UDim2.new(1, -20, 0, 60)
+    DropdownUIList.Parent = DropdownList
+    DropdownUIList.SortOrder = Enum.SortOrder.LayoutOrder
+
+    -- Подарок яиц
+    EggGiftFrame.Name = "EggGiftFrame"
+    EggGiftFrame.Parent = GiftSection
+    EggGiftFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
+    EggGiftFrame.BorderSizePixel = 0
+    EggGiftFrame.Position = UDim2.new(0, 10, 0, 80)
+    EggGiftFrame.Size = UDim2.new(1, -20, 0, 35)
+
+    local eggCorner = Instance.new("UICorner")
+    eggCorner.CornerRadius = UDim.new(0, 4)
+    eggCorner.Parent = EggGiftFrame
 
     EggTextBox.Name = "EggTextBox"
-    EggTextBox.Parent = EggGiftSection
-    EggTextBox.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+    EggTextBox.Parent = EggGiftFrame
+    EggTextBox.BackgroundColor3 = Color3.fromRGB(60, 60, 65)
     EggTextBox.BorderSizePixel = 0
     EggTextBox.Position = UDim2.new(0, 5, 0, 5)
     EggTextBox.Size = UDim2.new(0.6, -10, 0, 25)
@@ -201,10 +225,11 @@ Shop:AddButton("Gift-System", function()
     EggTextBox.Text = ""
     EggTextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
     EggTextBox.TextSize = 12
+    EggTextBox.ClearTextOnFocus = false
 
     EggGiftButton.Name = "EggGiftButton"
-    EggGiftButton.Parent = EggGiftSection
-    EggGiftButton.BackgroundColor3 = Color3.fromRGB(60, 120, 60)
+    EggGiftButton.Parent = EggGiftFrame
+    EggGiftButton.BackgroundColor3 = Color3.fromRGB(70, 130, 70)
     EggGiftButton.BorderSizePixel = 0
     EggGiftButton.Position = UDim2.new(0.6, 5, 0, 5)
     EggGiftButton.Size = UDim2.new(0.4, -10, 0, 25)
@@ -213,17 +238,21 @@ Shop:AddButton("Gift-System", function()
     EggGiftButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     EggGiftButton.TextSize = 12
 
-    -- Shake Gift Section
-    ShakeGiftSection.Name = "ShakeGiftSection"
-    ShakeGiftSection.Parent = GiftFolder
-    ShakeGiftSection.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
-    ShakeGiftSection.BorderSizePixel = 0
-    ShakeGiftSection.Position = UDim2.new(0, 10, 0, 170)
-    ShakeGiftSection.Size = UDim2.new(1, -20, 0, 60)
+    -- Подарок шейков
+    ShakeGiftFrame.Name = "ShakeGiftFrame"
+    ShakeGiftFrame.Parent = GiftSection
+    ShakeGiftFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
+    ShakeGiftFrame.BorderSizePixel = 0
+    ShakeGiftFrame.Position = UDim2.new(0, 10, 0, 125)
+    ShakeGiftFrame.Size = UDim2.new(1, -20, 0, 35)
+
+    local shakeCorner = Instance.new("UICorner")
+    shakeCorner.CornerRadius = UDim.new(0, 4)
+    shakeCorner.Parent = ShakeGiftFrame
 
     ShakeTextBox.Name = "ShakeTextBox"
-    ShakeTextBox.Parent = ShakeGiftSection
-    ShakeTextBox.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+    ShakeTextBox.Parent = ShakeGiftFrame
+    ShakeTextBox.BackgroundColor3 = Color3.fromRGB(60, 60, 65)
     ShakeTextBox.BorderSizePixel = 0
     ShakeTextBox.Position = UDim2.new(0, 5, 0, 5)
     ShakeTextBox.Size = UDim2.new(0.6, -10, 0, 25)
@@ -232,10 +261,11 @@ Shop:AddButton("Gift-System", function()
     ShakeTextBox.Text = ""
     ShakeTextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
     ShakeTextBox.TextSize = 12
+    ShakeTextBox.ClearTextOnFocus = false
 
     ShakeGiftButton.Name = "ShakeGiftButton"
-    ShakeGiftButton.Parent = ShakeGiftSection
-    ShakeGiftButton.BackgroundColor3 = Color3.fromRGB(60, 120, 60)
+    ShakeGiftButton.Parent = ShakeGiftFrame
+    ShakeGiftButton.BackgroundColor3 = Color3.fromRGB(70, 130, 70)
     ShakeGiftButton.BorderSizePixel = 0
     ShakeGiftButton.Position = UDim2.new(0.6, 5, 0, 5)
     ShakeGiftButton.Size = UDim2.new(0.4, -10, 0, 25)
@@ -244,7 +274,7 @@ Shop:AddButton("Gift-System", function()
     ShakeGiftButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     ShakeGiftButton.TextSize = 12
 
-    -- Логика
+    -- Логика системы
     local selectedGiftPlayer = nil
     local eggGiftCount = 0
     local shakeGiftCount = 0
@@ -282,14 +312,14 @@ Shop:AddButton("Gift-System", function()
 
     -- Логика выпадающего списка игроков
     local function updateDropdown()
-        DropdownFrame:ClearAllChildren()
+        DropdownList:ClearAllChildren()
         
         for _, targetPlayer in ipairs(Players:GetPlayers()) do
             if targetPlayer ~= player then
                 local playerButton = Instance.new("TextButton")
                 playerButton.Name = targetPlayer.Name
-                playerButton.Parent = DropdownFrame
-                playerButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+                playerButton.Parent = DropdownList
+                playerButton.BackgroundColor3 = Color3.fromRGB(60, 60, 65)
                 playerButton.BorderSizePixel = 0
                 playerButton.Size = UDim2.new(1, 0, 0, 25)
                 playerButton.Font = Enum.Font.Gotham
@@ -300,15 +330,15 @@ Shop:AddButton("Gift-System", function()
                 playerButton.MouseButton1Click:Connect(function()
                     selectedGiftPlayer = targetPlayer
                     DropdownButton.Text = targetPlayer.Name
-                    DropdownFrame.Visible = false
-                    DropdownFrame.Size = UDim2.new(1, -10, 0, 0)
+                    DropdownList.Visible = false
+                    DropdownList.Size = UDim2.new(1, 0, 0, 0)
                 end)
             end
         end
         
-        local playerCount = #DropdownFrame:GetChildren()
+        local playerCount = #DropdownList:GetChildren()
         if playerCount > 0 then
-            DropdownFrame.Size = UDim2.new(1, -10, 0, playerCount * 25)
+            DropdownList.Size = UDim2.new(1, 0, 0, playerCount * 25)
         end
     end
 
@@ -336,7 +366,7 @@ Shop:AddButton("Gift-System", function()
     end)
 
     DropdownButton.MouseButton1Click:Connect(function()
-        DropdownFrame.Visible = not DropdownFrame.Visible
+        DropdownList.Visible = not DropdownList.Visible
     end)
 
     EggTextBox:GetPropertyChangedSignal("Text"):Connect(function()
@@ -351,6 +381,7 @@ Shop:AddButton("Gift-System", function()
                     ReplicatedStorage.rEvents.giftRemote:InvokeServer("giftRequest", selectedGiftPlayer, proteinEgg)
                     task.wait(0.1)
                 end
+                EggTextBox.Text = ""
             end
         end
     end)
@@ -367,6 +398,7 @@ Shop:AddButton("Gift-System", function()
                     ReplicatedStorage.rEvents.giftRemote:InvokeServer("giftRequest", selectedGiftPlayer, tropicalShake)
                     task.wait(0.1)
                 end
+                ShakeTextBox.Text = ""
             end
         end
     end)
